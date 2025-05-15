@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './db.js';
 import AuthRouter from './routes/authRoutes.js';
+import SongRouter from './routes/songRoutes.js';
 import { Server } from 'socket.io';
 import http from 'http';
 
@@ -16,6 +17,7 @@ connectDB();
 
 // API routes
 app.use('/api/auth', AuthRouter);
+app.use('/api', SongRouter);
 
 // Create HTTP server and attach Socket.IO
 const server = http.createServer(app);
@@ -29,6 +31,12 @@ const io = new Server(server, {
 // Handle socket connections
 io.on('connection', (socket) => {
   console.log('🟢 User connected:', socket.id);
+
+  socket.on('send-lyrics', ({ singerLyrics, playerLyrics }) => {
+    console.log('📤 Sending lyrics to singers and players');
+    io.emit('lyrics-for-singers', singerLyrics);
+    io.emit('lyrics-for-players', playerLyrics);
+  });
 
   socket.on('disconnect', () => {
     console.log('🔴 User disconnected:', socket.id);
