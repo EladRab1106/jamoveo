@@ -1,0 +1,18 @@
+# תלותים
+node_modules/
+
+# קבצי Build (אם תשתמש ב-TypeScript או Babel בעתיד)
+dist/
+
+# קבצי סביבה
+.env
+
+# קבצי לוגים
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# קבצי מערכת
+.DS_Store
