@@ -25,7 +25,7 @@ export const register = async (req, res) => {
       instrument,
     });
 
-    newUser.role = instrument === 'none' ? 'singer' : 'player';
+    newUser.role = instrument == 'vocals' ? 'singer' : 'player';
 
     await newUser.save();
     res.status(201).json({ message: 'User registered successfully' });
@@ -34,19 +34,42 @@ export const register = async (req, res) => {
   }
 };
 
-export const login = async (req, res, expectedRole) => {
+export const adminRegister = async (req, res) => {
+  const { userName, email, password } = req.body;
+  try {
+    const existingUser = await User.findOne({
+      $or: [{ userName }, { email }],
+    });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: 'Password must be at least 6 characters long' });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      userName,
+      email,
+      password: hashedPassword,
+    });
+    newUser.role = 'admin';
+    newUser.instrument = 'none';
+    await newUser.save();
+    res.status(201).json({ message: 'Admin registered successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error registering admin', error });
+  }
+};
+
+export const login = async (req, res) => {
   const { userName, password } = req.body;
 
   try {
     const user = await User.findOne({ userName });
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    if (user.role !== expectedRole) {
-      return res.status(403).json({
-        message: `Access denied: only ${expectedRole}s can log in here`,
-      });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);

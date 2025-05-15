@@ -1,23 +1,41 @@
 import express from 'express';
+import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './db.js';
-import dotenv from 'dotenv';
 import AuthRouter from './routes/authRoutes.js';
+import { Server } from 'socket.io';
+import http from 'http';
+
 dotenv.config();
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 connectDB();
 
-app.get('/', (req, res) => {
-  res.send('Hello from backend!');
-});
-
+// API routes
 app.use('/api/auth', AuthRouter);
 
-const PORT = process.env.PORT || 3000;
+// Create HTTP server and attach Socket.IO
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:5173', // או מה שיהיה בעתיד
+    methods: ['GET', 'POST'],
+  },
+});
 
-app.listen(PORT, () => {
+// Handle socket connections
+io.on('connection', (socket) => {
+  console.log('🟢 User connected:', socket.id);
+
+  socket.on('disconnect', () => {
+    console.log('🔴 User disconnected:', socket.id);
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

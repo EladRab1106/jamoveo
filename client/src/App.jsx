@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
+import { Routes, Route } from 'react-router-dom';
+import AdminPage from './pages/AdminPage'
+import UserPage from './pages/userPage';
+import Login from './auth/login';
+import Register from './auth/register';
 
-function App() {
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    fetch("http://localhost:3001/")
-      .then((res) => res.text())
-      .then((data) => setMessage(data))
-      .catch((err) => console.error(err));
-  }, []);
+const App = () => {
 
   return (
     <div>
-      <h1>Front + Back Connected</h1>
-      <p>Response from server: {message}</p>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/admin/register" element={<Register />} />
+        <Route path="/admin/home" element={<AdminPage />} />
+        <Route path="/user/home" element={<UserPage />} />
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;

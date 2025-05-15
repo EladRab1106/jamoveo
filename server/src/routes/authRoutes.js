@@ -1,10 +1,19 @@
 import express from 'express';
-import { register, login } from '../controllers/authController.js';
-import { verifyToken } from '../middleware/authMiddleware.js';
+import {
+  register,
+  login,
+  adminRegister,
+} from '../controllers/authController.js';
 
 const router = express.Router();
 
+// רישום למשתמש רגיל
 router.post('/register', register);
-router.post('/user/login', (req, res) => login(req, res, 'user'));
-router.post('/admin/login', (req, res) => login(req, res, 'admin'));
+
+// רישום לאדמין - כתובת שונה לפי הדרישות
+router.post('/admin/register', adminRegister);
+
+// התחברות אחידה
+router.post('/login', login);
+
 export default router;
