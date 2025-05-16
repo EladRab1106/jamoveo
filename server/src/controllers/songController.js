@@ -29,14 +29,20 @@ export const fetchSongData = async (req, res) => {
         .json({ message: 'Could not extract song content' });
     }
 
-    const { forSingers, forPlayers } = extractLyricsVersions(content);
+    const { forSingers, forPlayers, debugInfo } = extractLyricsVersions(content);
+
+    // Include debug info in development environment
+    const response = {
+      lyrics: role === 'singer' ? forSingers : forPlayers,
+      ...(process.env.NODE_ENV === 'development' && { debugInfo })
+    };
 
     if (role === 'singer') {
-      return res.json({ lyrics: forSingers });
+      return res.json(response);
     }
 
     if (role === 'player') {
-      return res.json({ lyricsWithChords: forPlayers });
+      return res.json({ ...response, lyricsWithChords: response.lyrics });
     }
 
     return res.status(400).json({ message: 'Invalid role' });
