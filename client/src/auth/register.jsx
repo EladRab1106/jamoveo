@@ -88,12 +88,12 @@ const Register = () => {
                 className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-white/50 transition-colors"
                 dir="rtl"
               >
-                <option value="none">ללא</option>
-                <option value="guitar">גיטרה</option>
-                <option value="piano">פסנתר</option>
-                <option value="drums">תופים</option>
-                <option value="bass">בס</option>
-                <option value="vocals">שירה</option>
+                <option value="" disabled hidden>בחר כלי נגינה</option>
+                    <option value="guitar">גיטרה</option>
+                    <option value="piano">פסנתר</option>
+                    <option value="drums">תופים</option>
+                    <option value="bass">בס</option>
+                    <option value="vocals">שירה</option>
               </select>
             </div>
           )}
