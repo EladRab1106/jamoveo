@@ -32,10 +32,16 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
   console.log('🟢 User connected:', socket.id);
 
-  socket.on('send-lyrics', ({ singerLyrics, playerLyrics }) => {
-    console.log('📤 Sending lyrics to singers and players');
-    io.emit('lyrics-for-singers', singerLyrics);
-    io.emit('lyrics-for-players', playerLyrics);
+  socket.on('start-live', ({ singerLyrics, playerLyrics }) => {
+    console.log('📤 Sending start-live to all clients');
+
+    // משדר את המילים לפי תפקיד דרך אותו event, הלקוח יבחר מה להציג
+    io.emit('start-live', { singerLyrics, playerLyrics });
+  });
+
+  socket.on('quit-live', () => {
+    console.log('📤 Sending quit-live to all clients');
+    io.emit('end-live');
   });
 
   socket.on('disconnect', () => {

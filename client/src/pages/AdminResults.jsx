@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import socket from '../socket/socket'; 
 import axios from '../api/serverApi';
 
 const AdminResultsPage = () => {
+  const navigate = useNavigate();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const query = new URLSearchParams(useLocation().search).get('query');
@@ -30,15 +32,23 @@ const AdminResultsPage = () => {
         axios.get(`/song?link=${encodeURIComponent(link)}&role=player`)
       ]);
 
-      socket.emit('send-lyrics', {
-        singerLyrics: singerRes.data.lyrics,
-        playerLyrics: playerRes.data.lyricsWithChords,
-      });
+      socket.emit('start-live', {
+  singerLyrics: singerRes.data.lyrics,
+  playerLyrics: playerRes.data.lyricsWithChords,
+});
+
 
     } catch (err) {
       console.error('Error fetching song content:', err);
     }
   };
+
+  const handleQuit = () => {
+    socket.emit('quit-live');
+    localStorage.removeItem('singerLyrics');
+    localStorage.removeItem('playerLyrics');
+    navigate('/admin/home');
+  }
 
   if (loading) return <p>Loading...</p>;
 
@@ -54,6 +64,8 @@ const AdminResultsPage = () => {
           </li>
         ))}
       </ul>
+      {results.length === 0 && <p>No results found.</p>}
+      <button onClick={handleQuit}>quit</button>
     </div>
   );
 };
