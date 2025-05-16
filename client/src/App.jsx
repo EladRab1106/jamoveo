@@ -6,10 +6,12 @@ import Login from './auth/login';
 import Register from './auth/register';
 import MainPage from './pages/MainPage';
 import LivePage from './pages/LivePage';
+import NavBar from './components/NavBar';
 
 const App = () => {
   return (
     <div>
+      <NavBar/>
       <Routes>
         {/* Authentication */}
         <Route path="/login" element={<Login />} />
