@@ -9,11 +9,30 @@ import http from 'http';
 
 dotenv.config();
 
+// Create Express app
 const app = express();
-app.use(cors());
+
+// CORS setup
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://jamoveo-three.vercel.app',
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST'],
+  credentials: true,
+}));
+
 app.use(express.json());
 
+// Connect to MongoDB
 connectDB();
+
+// Health check route
+app.get('/', (req, res) => {
+  res.send('🎧 Jamoveo API is running!');
+});
 
 // API routes
 app.use('/api/auth', AuthRouter);
@@ -21,10 +40,12 @@ app.use('/api', SongRouter);
 
 // Create HTTP server and attach Socket.IO
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173', // או מה שיהיה בעתיד
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
+    credentials: true,
   },
 });
 
@@ -34,8 +55,6 @@ io.on('connection', (socket) => {
 
   socket.on('start-live', ({ singerLyrics, playerLyrics }) => {
     console.log('📤 Sending start-live to all clients');
-
-    // משדר את המילים לפי תפקיד דרך אותו event, הלקוח יבחר מה להציג
     io.emit('start-live', { singerLyrics, playerLyrics });
   });
 
@@ -49,6 +68,7 @@ io.on('connection', (socket) => {
   });
 });
 
+// Start server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
