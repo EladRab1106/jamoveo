@@ -23,14 +23,15 @@ const Login = () => {
 
       localStorage.setItem('token', token);
 
-      // פענוח ה־payload מתוך ה־JWT
       const payload = JSON.parse(atob(token.split('.')[1]));
       const { role } = payload;
+
+      localStorage.setItem('role', role);
 
       if (role === 'admin') {
         navigate('/admin/home');
       } else {
-        navigate('/user/home');
+        navigate('/main');
       }
 
     } catch (error) {
