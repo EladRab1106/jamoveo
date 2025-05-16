@@ -23,7 +23,7 @@ app.use('/api', SongRouter);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5174', // או מה שיהיה בעתיד
+    origin: 'http://localhost:5173', // או מה שיהיה בעתיד
     methods: ['GET', 'POST'],
   },
 });

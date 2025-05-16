@@ -5,10 +5,10 @@ const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  const handleRegister = (role) => {
-    navigate(`/register?as=${role}`);
-    setShowModal(false);
-  };
+  // const handleRegister = (role) => {
+  //   navigate(`/register?as=${role}`);
+  //   setShowModal(false);
+  // };
 
   return (
     <div
