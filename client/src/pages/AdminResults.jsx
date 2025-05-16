@@ -37,6 +37,14 @@ const AdminResultsPage = () => {
   playerLyrics: playerRes.data.lyricsWithChords,
 });
 
+      localStorage.setItem('singerLyrics', singerRes.data.lyrics);
+
+setTimeout(() => {
+  navigate('/live');
+}, 50);
+ 
+      
+
 
     } catch (err) {
       console.error('Error fetching song content:', err);
