@@ -7,6 +7,7 @@ import Register from './auth/register';
 import MainPage from './pages/MainPage';
 import LivePage from './pages/LivePage';
 import NavBar from './components/NavBar';
+import HomePage from './pages/HomePage';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <NavBar/>
       <Routes>
         {/* Authentication */}
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/admin/register" element={<Register />} />
