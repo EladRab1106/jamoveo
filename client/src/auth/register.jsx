@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import serverApi from '../api/serverApi';
 
 const Register = () => {
@@ -35,34 +35,84 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h2>{isAdmin ? 'Admin' : 'User'} Register</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Username:</label>
-        <input value={userName} onChange={(e) => setUserName(e.target.value)} required />
-        <br />
-        <label>Email:</label>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <br />
-        <label>Password:</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <br />
-        {!isAdmin && (
-          <>
-            <label>Instrument:</label>
-            <select value={instrument} onChange={(e) => setInstrument(e.target.value)}>
-              <option value="none">None</option>
-              <option value="guitar">Guitar</option>
-              <option value="piano">Piano</option>
-              <option value="drums">Drums</option>
-              <option value="bass">Bass</option>
-              <option value="vocals">Vocals</option>
-            </select>
-            <br />
-          </>
-        )}
-        <button type="submit">Register</button>
-      </form>
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center" 
+         style={{ backgroundImage: 'url(/mainBG.png)' }}>
+      <div className="w-full max-w-md p-8 rounded-xl backdrop-blur-sm bg-black/30">
+        <h2 className="text-3xl font-bold mb-6 text-white text-center">
+          {isAdmin ? 'הרשמת מנהל' : 'הרשמה'}
+        </h2>
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <label className="block text-white text-right">שם משתמש</label>
+            <input
+              value={userName}
+              type="text"
+              required
+              className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-colors"
+              onChange={(e) => setUserName(e.target.value)}
+              dir="rtl"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-white text-right">אימייל</label>
+            <input
+              value={email}
+              type="email"
+              required
+              className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-colors"
+              onChange={(e) => setEmail(e.target.value)}
+              dir="rtl"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-white text-right">סיסמה</label>
+            <input
+              type="password"
+              value={password}
+              required
+              className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-colors"
+              onChange={(e) => setPassword(e.target.value)}
+              dir="rtl"
+            />
+          </div>
+
+          {!isAdmin && (
+            <div className="space-y-2">
+              <label className="block text-white text-right">כלי נגינה</label>
+              <select
+                value={instrument}
+                onChange={(e) => setInstrument(e.target.value)}
+                className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-white/50 transition-colors"
+                dir="rtl"
+              >
+                <option value="none">ללא</option>
+                <option value="guitar">גיטרה</option>
+                <option value="piano">פסנתר</option>
+                <option value="drums">תופים</option>
+                <option value="bass">בס</option>
+                <option value="vocals">שירה</option>
+              </select>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]"
+          >
+            הירשם
+          </button>
+
+          <p className="text-white text-center mt-4">
+            כבר יש לך חשבון?{' '}
+            <Link to="/login" className="text-blue-400 hover:text-blue-300 transition-colors">
+              התחבר כאן
+            </Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };
