@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import serverApi from '../api/serverApi';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -27,6 +29,7 @@ const Login = () => {
       const { role } = payload;
 
       localStorage.setItem('role', role);
+      login(token, role);
 
       if (role === 'admin') {
         navigate('/admin/home');

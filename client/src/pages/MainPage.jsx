@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import socket from '../socket/socket';
+import { useAuth } from '../context/AuthContext';
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const { role } = useAuth();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
     if (!token || !role) {
       navigate('/login');
       return;
@@ -16,9 +17,6 @@ const MainPage = () => {
 
     // שמירה גם של התפקיד וגם של המילים לפי התפקיד
     socket.on('start-live', ({ singerLyrics, playerLyrics }) => {
-      const isSinger = role === 'singer';
-
-      localStorage.setItem('role', isSinger ? 'singer' : 'player');
       localStorage.setItem('singerLyrics', singerLyrics);
       localStorage.setItem('playerLyrics', playerLyrics);
 
