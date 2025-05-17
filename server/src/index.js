@@ -43,9 +43,8 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: '*', // במקום רשימה סגורה
     methods: ['GET', 'POST'],
-    credentials: true,
   },
 });
 
@@ -54,7 +53,7 @@ io.on('connection', (socket) => {
   console.log('🟢 User connected:', socket.id);
 
   socket.on('start-live', ({ singerLyrics, playerLyrics }) => {
-    console.log('📤 Sending start-live to all clients');
+  console.log('📤 start-live triggered by', socket.id);
     io.emit('start-live', { singerLyrics, playerLyrics });
   });
 
