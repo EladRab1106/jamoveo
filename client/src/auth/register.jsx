@@ -78,7 +78,7 @@ const Register = () => {
             <label className="block text-white text-right">אימייל</label>
             <input
               value={email}
-              type="email"
+              type="text"
               required
               className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-colors"
               onChange={(e) => setEmail(e.target.value)}
