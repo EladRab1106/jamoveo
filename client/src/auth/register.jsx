@@ -61,13 +61,12 @@ const Register = () => {
           {isAdmin ? 'הרשמת מנהל' : 'הרשמה'}
         </h2>
         
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6" noValidate>
           <div className="space-y-2">
             <label className="block text-white text-right">שם משתמש</label>
             <input
               value={userName}
               type="text"
-              required
               className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-colors"
               onChange={(e) => setUserName(e.target.value)}
               dir="rtl"
@@ -79,7 +78,6 @@ const Register = () => {
             <input
               value={email}
               type="text"
-              required
               className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-colors"
               onChange={(e) => setEmail(e.target.value)}
               dir="rtl"
@@ -91,7 +89,6 @@ const Register = () => {
             <input
               type="password"
               value={password}
-              required
               className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-colors"
               onChange={(e) => setPassword(e.target.value)}
               dir="rtl"
