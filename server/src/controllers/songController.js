@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer';
-import { extractLyricsVersions } from '../utils/extractLyrics.js'; // הנתיב לפי המבנה שלך
+import { extractLyricsVersions } from '../utils/extractLyrics.js';
 
 export const fetchSongData = async (req, res) => {
   const { link, role } = req.query;
@@ -9,7 +9,11 @@ export const fetchSongData = async (req, res) => {
   }
 
   try {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
+
     const page = await browser.newPage();
     await page.goto(link, { waitUntil: 'domcontentloaded' });
 
@@ -31,7 +35,6 @@ export const fetchSongData = async (req, res) => {
 
     const { forSingers, forPlayers, debugInfo } = extractLyricsVersions(content);
 
-    // Include debug info in development environment
     const response = {
       lyrics: role === 'singer' ? forSingers : forPlayers,
       ...(process.env.NODE_ENV === 'development' && { debugInfo })
