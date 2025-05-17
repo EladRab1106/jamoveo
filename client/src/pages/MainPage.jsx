@@ -14,16 +14,20 @@ const MainPage = () => {
       return;
     }
 
-    socket.on('start-live', ({ singerLyrics, playerLyrics }) => {
+    if (!socket) return;
+
+    const handleStartLive = ({ singerLyrics, playerLyrics }) => {
       localStorage.setItem('singerLyrics', singerLyrics);
       localStorage.setItem('playerLyrics', playerLyrics);
       navigate('/live');
-    });
+    };
+
+    socket.on('start-live', handleStartLive);
 
     return () => {
-      socket.off('start-live');
+      socket.off('start-live', handleStartLive);
     };
-  }, [navigate]);
+  }, [navigate, role]);
 
   return (
     <div 

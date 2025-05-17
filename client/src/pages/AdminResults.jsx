@@ -31,10 +31,12 @@ const AdminResultsPage = () => {
         axios.get(`/song?link=${encodeURIComponent(link)}&role=player`)
       ]);
 
-      socket.emit('start-live', {
-        singerLyrics: singerRes.data.lyrics,
-        playerLyrics: playerRes.data.lyricsWithChords,
-      });
+      if (socket) {
+        socket.emit('start-live', {
+          singerLyrics: singerRes.data.lyrics,
+          playerLyrics: playerRes.data.lyricsWithChords,
+        });
+      }
 
       localStorage.setItem('singerLyrics', singerRes.data.lyrics);
 
@@ -47,7 +49,9 @@ const AdminResultsPage = () => {
   };
 
   const handleQuit = () => {
-    socket.emit('quit-live');
+    if (socket) {
+      socket.emit('quit-live');
+    }
     localStorage.removeItem('singerLyrics');
     localStorage.removeItem('playerLyrics');
     navigate('/admin/home');
@@ -58,13 +62,10 @@ const AdminResultsPage = () => {
       className="min-h-screen w-full bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: 'url(/mainBG.png)' }}
     >
-      {/* Dark overlay for better contrast */}
       <div className="absolute inset-0 bg-black/40"></div>
 
-      {/* Content container */}
       <div className="relative z-10 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
           <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 drop-shadow-lg">
               🔍 תוצאות חיפוש
@@ -110,7 +111,6 @@ const AdminResultsPage = () => {
                 </div>
               )}
 
-              {/* Navigation buttons */}
               <div className="mt-8 flex justify-between gap-4">
                 <button
                   onClick={() => navigate('/admin/home')}
