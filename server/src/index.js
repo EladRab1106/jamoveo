@@ -51,19 +51,38 @@ const io = new Server(server, {
 // Handle socket connections
 io.on('connection', (socket) => {
   console.log('🟢 User connected:', socket.id);
+  console.log('🔌 Transport:', socket.conn.transport.name);
+  console.log('👥 Total connected clients:', io.engine.clientsCount);
 
   socket.on('start-live', ({ singerLyrics, playerLyrics }) => {
-  console.log('📤 start-live triggered by', socket.id);
+    console.log('📥 Received start-live event from:', socket.id);
+    console.log('👥 Broadcasting to', io.engine.clientsCount, 'clients');
+    
+    // Verify we have the data
+    if (!singerLyrics || !playerLyrics) {
+      console.error('❌ Missing lyrics data in start-live event');
+      return;
+    }
+
+    // Broadcast to all clients (including sender)
     io.emit('start-live', { singerLyrics, playerLyrics });
+    console.log('✅ start-live event broadcasted to all clients');
   });
 
   socket.on('quit-live', () => {
-    console.log('📤 Sending quit-live to all clients');
+    console.log('📥 Received quit-live from:', socket.id);
+    console.log('👥 Broadcasting end-live to', io.engine.clientsCount, 'clients');
     io.emit('end-live');
+    console.log('✅ end-live event broadcasted');
   });
 
-  socket.on('disconnect', () => {
-    console.log('🔴 User disconnected:', socket.id);
+  socket.on('disconnect', (reason) => {
+    console.log('🔴 User disconnected:', socket.id, 'Reason:', reason);
+    console.log('👥 Remaining clients:', io.engine.clientsCount);
+  });
+
+  socket.on('error', (error) => {
+    console.error('❌ Socket error for', socket.id, ':', error);
   });
 });
 
