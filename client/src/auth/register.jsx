@@ -39,7 +39,7 @@ const Register = () => {
 
     try {
       await serverApi.post(endpoint, {
-        userName,
+        userName: userName.toLowerCase(),
         email,
         password,
         instrument: isAdmin ? 'none' : instrument,

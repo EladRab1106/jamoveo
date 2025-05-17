@@ -14,7 +14,7 @@ const Login = () => {
 
     try {
       const response = await serverApi.post('/auth/login', {
-        userName,
+        userName: userName.toLowerCase(),
         password
       });
 
