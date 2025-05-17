@@ -8,6 +8,8 @@ const MainPage = () => {
   const { role } = useAuth();
 
   useEffect(() => {
+    console.log('🌐 VITE_SOCKET_URL:', import.meta.env.VITE_SOCKET_URL);
+
   const token = localStorage.getItem('token');
   if (!token || !role) {
     navigate('/login');
