@@ -31,12 +31,12 @@ const AdminResultsPage = () => {
         axios.get(`/song?link=${encodeURIComponent(link)}&role=player`)
       ]);
 
-      if (socket) {
+      // if (socket) {
         socket.emit('start-live', {
           singerLyrics: singerRes.data.lyrics,
           playerLyrics: playerRes.data.lyricsWithChords,
         });
-      }
+      // }
 
       localStorage.setItem('singerLyrics', singerRes.data.lyrics);
 
