@@ -9,8 +9,8 @@ Jamoveo is a full-stack real-time music collaboration app built as a response to
 
 ## 🧠 Tech Stack
 
-- React (Vite)
-- Node.js + Express
+- React ( Vite)
+- Node.js +  Express
 - MongoDB + Mongoose
 - Socket.IO
 - Puppeteer (for lyrics scraping)
