@@ -1,11 +1,12 @@
 import { io } from 'socket.io-client';
 
-let socket = null;
+const socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000', {
+  transports: ['websocket'],
+});
 
-if (import.meta.env.PROD && import.meta.env.VITE_SOCKET_URL) {
-  socket = io(import.meta.env.VITE_SOCKET_URL, {
-    transports: ['websocket'],
-  });
-}
+socket.on('connect', () => {
+  console.log('✅ socket connected inside socket.js:', socket.id);
+  
+});
 
 export default socket;
