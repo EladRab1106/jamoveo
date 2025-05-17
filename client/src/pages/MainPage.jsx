@@ -8,26 +8,40 @@ const MainPage = () => {
   const { role } = useAuth();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token || !role) {
-      navigate('/login');
-      return;
-    }
+  const token = localStorage.getItem('token');
+  if (!token || !role) {
+    navigate('/login');
+    return;
+  }
 
-    if (!socket) return;
+  if (!socket) {
+    console.warn('🔴 socket לא קיים');
+    return;
+  }
 
-    const handleStartLive = ({ singerLyrics, playerLyrics }) => {
-      localStorage.setItem('singerLyrics', singerLyrics);
-      localStorage.setItem('playerLyrics', playerLyrics);
-      navigate('/live');
-    };
+  console.log('🟢 socket instance:', socket);
 
-    socket.on('start-live', handleStartLive);
+  socket.on('connect', () => {
+    console.log('✅ connected to socket:', socket.id);
+  });
 
-    return () => {
-      socket.off('start-live', handleStartLive);
-    };
-  }, [navigate, role]);
+  socket.on('disconnect', () => {
+    console.warn('🔌 disconnected from socket');
+  });
+
+  const handleStartLive = ({ singerLyrics, playerLyrics }) => {
+    localStorage.setItem('singerLyrics', singerLyrics);
+    localStorage.setItem('playerLyrics', playerLyrics);
+    navigate('/live');
+  };
+
+  socket.on('start-live', handleStartLive);
+
+  return () => {
+    socket.off('start-live', handleStartLive);
+  };
+}, [navigate, role]);
+
 
   return (
     <div 
