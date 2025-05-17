@@ -8,7 +8,7 @@ const MainPage = () => {
   const { role } = useAuth();
 
   useEffect(() => {
-    console.log('🌐 VITE_SOCKET_URL:', import.meta.env.VITE_SOCKET_URL);
+  console.log('🌐 VITE_SOCKET_URL:', import.meta.env.VITE_SOCKET_URL);
 
   const token = localStorage.getItem('token');
   if (!token || !role) {
@@ -43,6 +43,7 @@ const MainPage = () => {
     socket.off('start-live', handleStartLive);
   };
 }, [navigate, role]);
+
 
 
   return (
