@@ -16,6 +16,7 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',
   'https://jamoveo-three.vercel.app',
+  'https://jamoveo-ehb6yxr18-eladrab1106s-projects.vercel.app/',
 ];
 
 app.use(cors({

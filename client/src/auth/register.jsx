@@ -13,26 +13,52 @@ const Register = () => {
 
   const isAdmin = location.pathname.includes('/admin');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const isEmailValid = (email) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
 
-    const endpoint = isAdmin ? '/auth/admin/register' : '/auth/register';
 
-    try {
-      await serverApi.post(endpoint, {
-        userName,
-        email,
-        password,
-        instrument: isAdmin ? 'none' : instrument,
-      });
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-      alert('Registration successful');
-      navigate('/login');
-    } catch (err) {
-      console.error('Registration error:', err.response?.data || err.message);
-      alert('Registration failed');
-    }
-  };
+  if (!userName.trim() || !email.trim() || !password.trim()) {
+    alert('נא למלא את כל השדות');
+    return;
+  }
+
+  if (!isEmailValid(email)) {
+    alert('האימייל אינו תקין');
+    return;
+  }
+
+  if (password.length < 6) {
+    alert('הסיסמה חייבת להיות לפחות 6 תווים');
+    return;
+  }
+
+  if (!isAdmin && instrument === '') {
+    alert('נא לבחור כלי נגינה');
+    return;
+  }
+
+  const endpoint = isAdmin ? '/auth/admin/register' : '/auth/register';
+
+  try {
+    await serverApi.post(endpoint, {
+      userName,
+      email,
+      password,
+      instrument: isAdmin ? 'none' : instrument,
+    });
+
+    alert('נרשמת בהצלחה');
+    navigate('/login');
+  } catch (err) {
+    console.error('Registration error:', err.response?.data || err.message);
+    alert(err.response?.data?.message || 'שגיאה בהרשמה');
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center" 
