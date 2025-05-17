@@ -7,44 +7,32 @@ const MainPage = () => {
   const navigate = useNavigate();
   const { role } = useAuth();
 
-  useEffect(() => {
-  if (role === undefined || role === null) return; // חכה שה־role יגיע
+ useEffect(() => {
+  console.log('✅ useEffect התחיל');
 
   console.log('🌐 VITE_SOCKET_URL:', import.meta.env.VITE_SOCKET_URL);
 
   const token = localStorage.getItem('token');
+  console.log('🔐 token:', token);
+  console.log('🧑‍🎤 role:', role);
+
   if (!token || !role) {
+    console.warn('⛔ חסר token או role - מעבר ל-login');
     navigate('/login');
     return;
   }
 
-  if (!socket) {
-    console.warn('🔴 socket לא קיים');
-    return;
-  }
+  console.log('🟢 ממשיך - socket:', socket);
 
-  console.log('🟢 socket instance:', socket);
-
-  socket.on('connect', () => {
-    console.log('✅ connected to socket:', socket.id);
+  socket?.on('connect', () => {
+    console.log('✅ socket connected:', socket.id);
   });
-
-  socket.on('disconnect', () => {
-    console.warn('🔌 disconnected from socket');
-  });
-
-  const handleStartLive = ({ singerLyrics, playerLyrics }) => {
-    localStorage.setItem('singerLyrics', singerLyrics);
-    localStorage.setItem('playerLyrics', playerLyrics);
-    navigate('/live');
-  };
-
-  socket.on('start-live', handleStartLive);
 
   return () => {
-    socket.off('start-live', handleStartLive);
+    socket?.off('connect');
   };
 }, [navigate, role]);
+
 
 
 
