@@ -8,6 +8,8 @@ const MainPage = () => {
   const { role } = useAuth();
 
   useEffect(() => {
+  if (role === undefined || role === null) return; // חכה שה־role יגיע
+
   console.log('🌐 VITE_SOCKET_URL:', import.meta.env.VITE_SOCKET_URL);
 
   const token = localStorage.getItem('token');
@@ -43,6 +45,7 @@ const MainPage = () => {
     socket.off('start-live', handleStartLive);
   };
 }, [navigate, role]);
+
 
 
 
