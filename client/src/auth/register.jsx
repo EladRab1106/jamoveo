@@ -16,6 +16,25 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate required fields
+    if (!userName.trim() || !email.trim() || !password.trim()) {
+      alert('כל השדות הם חובה');
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('כתובת האימייל אינה תקינה');
+      return;
+    }
+
+    // Validate password length
+    if (password.length < 6) {
+      alert('הסיסמה חייבת להכיל לפחות 6 תווים');
+      return;
+    }
+
     const endpoint = isAdmin ? '/auth/admin/register' : '/auth/register';
 
     try {
