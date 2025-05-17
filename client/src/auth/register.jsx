@@ -97,7 +97,7 @@ const Register = () => {
 
           {!isAdmin && (
             <div className="space-y-2">
-              <label className="block text-white text-right">כלי נגינה</label>
+              <label className="block text-white text-right"> כלי נגינה/שירה  </label>
               <select
                 value={instrument}
                 onChange={(e) => setInstrument(e.target.value)}
