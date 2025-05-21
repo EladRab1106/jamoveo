@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-export const ProtectedAdminRoute = ({ children }) => {
+ const ProtectedAdminRoute = ({ children }) => {
   const { role } = useAuth();
   const token = localStorage.getItem('token');
 
@@ -12,12 +12,6 @@ export const ProtectedAdminRoute = ({ children }) => {
   return children;
 };
 
-export const ProtectedUserRoute = ({ children }) => {
-  const token = localStorage.getItem('token');
+export default ProtectedAdminRoute;
 
-  if (!token) {
-    return <Navigate to="/login" />;
-  }
 
-  return children;
-};
