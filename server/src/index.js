@@ -16,15 +16,27 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',
   'https://jamoveo-three.vercel.app',
-  'https://jamoveo-ehb6yxr18-eladrab1106s-projects.vercel.app/',
+  'https://jamoveo.vercel.app',
+  'https://jamoveo-git-main-eladrab1106s-projects.vercel.app',
+  'https://jamoveo-ehb6yxr18-eladrab1106s-projects.vercel.app'
 ];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      console.log('Blocked origin:', origin);
+      return callback(null, false);
+    }
+    return callback(null, true);
+  },
   methods: ['GET', 'POST'],
-  credentials: true,
+  credentials: true
 }));
 
+// Middleware
 app.use(express.json());
 
 // Connect to MongoDB
@@ -36,7 +48,7 @@ app.get('/', (req, res) => {
 });
 
 // API routes
-app.use('/api/auth', AuthRouter);
+app.use('/auth', AuthRouter);
 app.use('/api', SongRouter);
 
 // Create HTTP server and attach Socket.IO
@@ -44,9 +56,17 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: '*', // במקום רשימה סגורה
+    origin: function(origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        console.log('Blocked socket origin:', origin);
+        return callback(null, false);
+      }
+      return callback(null, true);
+    },
     methods: ['GET', 'POST'],
-  },
+    credentials: true
+  }
 });
 
 // Handle socket connections
