@@ -22,12 +22,28 @@ const App = () => {
         <Route path="/admin/register" element={<Register />} />
 
         {/* Admin */}
-        <Route path="/admin/home" element={<AdminPage />} />
-        <Route path="/admin/results" element={<AdminResultsPage />} />
+        <Route path="/admin/home" element={
+          <ProtectedAdminRoute>
+            <AdminPage />
+          </ProtectedAdminRoute>
+        } />
+        <Route path="/admin/results" element={
+          <ProtectedAdminRoute>
+            <AdminResultsPage />
+          </ProtectedAdminRoute>
+        } />
 
         {/* Waiting and live pages */}
-        <Route path="/main" element={<MainPage />} />
-        <Route path="/live" element={<LivePage />} />
+        <Route path="/main" element={
+          <ProtectedUserRoute>
+            <MainPage />
+          </ProtectedUserRoute>
+        } />
+        <Route path="/live" element={
+          <ProtectedUserRoute>
+            <LivePage />
+          </ProtectedUserRoute>
+        } />
       </Routes>
     </div>
   );
