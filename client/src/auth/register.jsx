@@ -35,6 +35,7 @@ const Register = () => {
       return;
     }
 
+    // Remove /api prefix since it's already configured in serverApi baseURL
     const endpoint = isAdmin ? '/auth/admin/register' : '/auth/register';
 
     try {
@@ -49,7 +50,7 @@ const Register = () => {
       navigate('/login');
     } catch (err) {
       console.error('Registration error:', err.response?.data || err.message);
-      alert('Registration failed');
+      alert(err.response?.data?.message || 'Registration failed');
     }
   };
 
