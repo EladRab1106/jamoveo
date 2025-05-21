@@ -7,6 +7,8 @@ import MainPage from './pages/MainPage';
 import LivePage from './pages/LivePage';
 import NavBar from './components/NavBar';
 import HomePage from './pages/HomePage';
+import ProtectedAdminRoute from './protected/ProtectedAdminRoute';
+import ProtectedUserRoute from './protected/ProtectedUserRoute';
 
 const App = () => {
   return (
