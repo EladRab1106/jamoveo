@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
 });
 
 // API routes
-app.use('/auth', AuthRouter);
+app.use('/api/auth', AuthRouter);
 app.use('/api', SongRouter);
 
 // Create HTTP server and attach Socket.IO
